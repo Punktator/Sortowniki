@@ -15,7 +15,7 @@ namespace BenchmarkDotNet
         public object lista_sortownikow = new List<object> ();
         
 
-        static void Main()
+        public static void Main()
         {
             var Sortowniki = new Program();
 
@@ -76,7 +76,7 @@ namespace BenchmarkDotNet
                 //Console.Write("  ");
                 //Console.WriteLine(Sortowniki.unizegar.Elapsed.TotalNanoseconds);
 
-                Baza_Sortownikow.wyniki[i] = Sortowniki.unizegar.Elapsed.TotalNanoseconds;
+                Baza_Sortownikow.wyniki[i, 1] = Sortowniki.unizegar.Elapsed.TotalNanoseconds;
             }
             //Console.WriteLine("      [ns]");
 
@@ -99,10 +99,11 @@ namespace BenchmarkDotNet
             //Console.WriteLine();
             //Console.WriteLine(wyniki);
 
+            Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
             Console.ReadKey();
         }
 
-        void zapelnijLosowo(int max = Int32.MaxValue)
+        void zapelnijLosowo(int max = int.MaxValue)
         {
             for (int item = 0; item < tablica.Length; item++) tablica[item] = randomizer.Next(max);
         }
@@ -175,7 +176,7 @@ namespace BenchmarkDotNet
 
         public void wypelnijListe()
         {
-            lista_sortownikow
+            //lista_sortownikow
         }
     }
 
