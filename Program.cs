@@ -12,9 +12,13 @@ namespace BenchmarkDotNet
         Stopwatch unizegar = new();
         /*readonly*/
         public Random randomizer = new Random();
-        public object lista_sortownikow = new List<object> ();
+        public object lista_sortownikow = new List<object> 
+        { 
+            new Bombel(), 
+            new Bogosort(), 
+            new Gnom() 
+        };
         
-
         public static void Main()
         {
             var Sortowniki = new Program();
@@ -172,11 +176,6 @@ namespace BenchmarkDotNet
                 szybkoSortuj(lewy);
             if (i < prawy)
                 szybkoSortuj(i);
-        }
-
-        public void wypelnijListe()
-        {
-            //lista_sortownikow
         }
     }
 
