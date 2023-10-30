@@ -175,14 +175,14 @@ namespace BenchmarkDotNet
 
         public void wypelnijListe()
         {
-            //lista_sortownikow.
+            lista_sortownikow
         }
     }
 
     class Baza_Sortownikow
     {
         public const ushort testy = 2500;
-        public static double[] wyniki = new double[testy];
+        public static double[,] wyniki = new double[testy, 4];
 
         public virtual void sortuj()
         {
