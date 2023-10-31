@@ -78,6 +78,7 @@ public class Program
 
         WypiszTablice(sortowniki.probnaTablica);
 
+
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
     }
