@@ -1,17 +1,16 @@
-﻿// See: https//aka.ms/new-console-template for more information
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Sortowniki;
 
 public class Program
 {
-    public const ushort iteracjeWTescie = 2500;
+    public const ushort iteracjewTescie = 2500;
 
+    int [] probnaTablica;
     Stopwatch unizegar = new();
-    private static readonly Random randomizer = new();
-    private int[] probnaTablica;
-    public WynikTestu[] wyniki = new WynikTestu[iteracjeWTescie];
-    private readonly List<BazaSortownikow> listaSortownikow = new()
+    protected static readonly Random randomizer = new();
+    public WynikTestu[] wyniki = new WynikTestu[iteracjewTescie];
+    private readonly List<Baza_Sortownikow> listaSortownikow = new()
     {
         new Bombel(),
         new Bogosort(),
@@ -21,27 +20,23 @@ public class Program
     public static void Main()
     {
         Program sortowniki = new();
+
         Console.WriteLine("Podaj rozmiar tablicy: ");
         int n = int.Parse(Console.ReadLine());
-
         sortowniki.probnaTablica = new int[n];
-
-        //Sortowniki.zapelnijLosowo();
+        
         ZapelnijLosowo(sortowniki.probnaTablica);
 
-        sortowniki.WypiszTablice();
+        WypiszTablice(sortowniki.probnaTablica);
 
         Console.WriteLine();
 
         Console.WriteLine("Sortowanie...");
-        //Console.WriteLine();
-        //Console.WriteLine(Sortowniki.tablica[1]);
         sortowniki.unizegar = Stopwatch.StartNew();
-        //Sortowniki.bombelkuj();
         sortowniki.unizegar.Stop();
-        var tBomblowania = sortowniki.unizegar.Elapsed;
+        TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
 
-        sortowniki.WypiszTablice();
+        WypiszTablice(sortowniki.probnaTablica);
 
         Console.WriteLine();
 
@@ -51,89 +46,63 @@ public class Program
 
         ZapelnijLosowo(sortowniki.probnaTablica);
 
-        //Console.WriteLine("Szybkosortowanie...");
-
-        //Sortowniki.unizegar.Restart();
-        //Sortowniki.szybkoSortuj();
-        //Sortowniki.unizegar.Stop();
-
-        //TimeSpan tSzybkoSortowania = Sortowniki.unizegar.Elapsed;
-
-        //Sortowniki.wypiszTablice();
-        //Console.Write("T = ");
-        //Console.WriteLine(tSzybkoSortowania);
-
-        //Console.WriteLine();
         Console.WriteLine();
 
-        for (uint i = 3; i < iteracjeWTescie; i++)
+        foreach (var sortownik in sortowniki.listaSortownikow)
         {
-            sortowniki.probnaTablica = new int[i];
-            ZapelnijLosowo(sortowniki.probnaTablica);
-
-            sortowniki.unizegar.Restart();
-            //Sortowniki.bombelkuj();
-            sortowniki.unizegar.Stop();
-
-            //Console.Write(i);
-            //Console.Write("  ");
-            //Console.WriteLine(Sortowniki.unizegar.Elapsed.TotalNanoseconds);
-
-            sortowniki.wyniki[i] = new WynikTestu()
+            for (uint i = 3; i < iteracjewTescie; i++)
             {
-                Średnia = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
-                Mediana = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
-                OdchylenieStandardowe = 0,
-                Wariancja = 0,
-            };
-        }
-        //Console.WriteLine("      [ns]");
+                sortowniki.probnaTablica = new int[i];
+                ZapelnijLosowo(sortowniki.probnaTablica);
 
-        //Sortowniki.bogosortuj();
-        //Sortowniki.wypiszTablice();
+                sortowniki.unizegar.Restart();
+                sortownik.Sortuj(sortowniki.probnaTablica);
+                sortowniki.unizegar.Stop();
+
+                sortowniki.wyniki[i] = new WynikTestu()
+                {
+                    Średnia = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
+                    Mediana = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
+                    OdchylenieStandardowe = 0,
+                    Wariancja = 0,
+                };
+            }
+        }
+
 
         Console.WriteLine();
         ZapelnijLosowo(sortowniki.probnaTablica);
         Console.WriteLine("Sortowanie...");
 
-        //Sortowniki.gnomuj();
-
         Console.WriteLine();
 
-        sortowniki.WypiszTablice();
-        //Console.WriteLine();
-
-        //Sortowniki.zapelnijLosowo();
-
-        //Console.WriteLine();
-        //Console.WriteLine(wyniki);
+        WypiszTablice(sortowniki.probnaTablica);
 
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
     }
 
-    public void WypiszTablice()
+    public static void WypiszTablice(int[] tablica)
     {
-        for (uint i = 0; i < probnaTablica.Length; i++)
+        for (uint i = 0; i < tablica.Length; i++)
         {
-            Console.WriteLine(probnaTablica[i]);
+            Console.WriteLine(tablica[i]);
         }
     }
 
     public static void ZapelnijLosowo(int[] tablica, int max = int.MaxValue)
     {
-        for (int item = 0; item < tablica.Length; item++)
-            tablica[item] = randomizer.Next(max);
+        for (int i = 0; i < tablica.Length; i++)
+            tablica[i] = randomizer.Next(max);
     }
-
 }
 
-public abstract class BazaSortownikow
+public abstract class Baza_Sortownikow
 {
     public abstract void Sortuj(int[] tablica);
 }
 
-public class Bombel : BazaSortownikow
+public class Bombel : Baza_Sortownikow
 {
     public override void Sortuj(int[] tablica)
     {
@@ -158,7 +127,7 @@ public class Bombel : BazaSortownikow
     }
 }
 
-public class Gnom : BazaSortownikow
+public class Gnom : Baza_Sortownikow
 {
     public override void Sortuj(int[] tablica)
     {
@@ -180,9 +149,9 @@ public class Gnom : BazaSortownikow
     }
 }
 
-public class Bogosort : BazaSortownikow
+public class Bogosort : Baza_Sortownikow
 {
-    private readonly Random rng = new();
+    private readonly Random RNG = new();
 
     public override void Sortuj(int[] tablica)
     {
@@ -208,12 +177,11 @@ public class Bogosort : BazaSortownikow
 
             for (uint i = 0; i < tablica.Length; i++)
             {
-                int losowyIndeks = rng.Next(tablica.Length);
+                int losowyIndeks = RNG.Next(tablica.Length);
                 (tablica[i], tablica[losowyIndeks]) = (tablica[losowyIndeks], tablica[i]);
             }
         }
     }
-
 }
 
 public record struct WynikTestu
