@@ -89,8 +89,7 @@ public class Program
 
     public static void ZapelnijLosowo(int[] tablica, int max = int.MaxValue)
     {
-        for (int i = 0; i < tablica.Length; i++)
-            tablica[i] = randomizer.Next(max);
+        for (int i = 0; i < tablica.Length; i++) tablica[i] = randomizer.Next(max);
     }
 
     public static jakisTypLiczbowybezZnaku Mediana <jakisTypLiczbowybezZnaku> (jakisTypLiczbowybezZnaku[] tab) 
