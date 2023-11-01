@@ -10,7 +10,6 @@ public class Program
 {
     public const ushort iteracjewTescie = 2500;
 
-    int [] probnaTablica;
     Stopwatch unizegar = new();
     protected static readonly Random randomizer = new();
     public WynikTestu[] wyniki = new WynikTestu[iteracjewTescie];
@@ -23,25 +22,26 @@ public class Program
 
     public static void Main()
     {
-        Program sortowniki = new();
+        Obsluga_Sortownikow inferfejsSortowniczy = new();
+        var sortowniki2 = new Program();
 
         Console.WriteLine("Podaj rozmiar tablicy: ");
         int n = int.Parse(Console.ReadLine());
-        sortowniki.probnaTablica = new int[n];
+        inferfejsSortowniczy.probnaTablica = new int[n];
         
-        ZapelnijLosowo(sortowniki.probnaTablica);
+        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
 
-        WypiszTablice(sortowniki.probnaTablica);
+        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.probnaTablica);
 
         Console.WriteLine();
 
         Console.WriteLine("Sortowanie...");
-        sortowniki.unizegar = Stopwatch.StartNew();
-        sortowniki.listaSortownikow[0].Sortuj(sortowniki.probnaTablica);
-        sortowniki.unizegar.Stop();
-        TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
+        sortowniki2.unizegar = Stopwatch.StartNew();
+        sortowniki2.listaSortownikow[0].Sortuj(inferfejsSortowniczy.probnaTablica);
+        sortowniki2.unizegar.Stop();
+        TimeSpan tBomblowania = sortowniki2.unizegar.Elapsed;
 
-        WypiszTablice(sortowniki.probnaTablica);
+        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.probnaTablica);
 
         Console.WriteLine();
 
@@ -49,25 +49,25 @@ public class Program
         Console.WriteLine(tBomblowania);
 
 
-        ZapelnijLosowo(sortowniki.probnaTablica);
+        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
 
         Console.WriteLine();
 
-        foreach (var sortownik in sortowniki.listaSortownikow)
+        foreach (var sortownik in sortowniki2.listaSortownikow)
         {
             for (uint i = 3; i < iteracjewTescie; i++)
             {
-                sortowniki.probnaTablica = new int[i];
-                ZapelnijLosowo(sortowniki.probnaTablica);
+                inferfejsSortowniczy.probnaTablica = new int[i];
+                inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
 
-                sortowniki.unizegar.Restart();
-                sortownik.Sortuj(sortowniki.probnaTablica);
-                sortowniki.unizegar.Stop();
+                sortowniki2.unizegar.Restart();
+                sortownik.Sortuj(inferfejsSortowniczy.probnaTablica);
+                sortowniki2.unizegar.Stop();
 
-                sortowniki.wyniki[i] = new WynikTestu()
+                sortowniki2.wyniki[i] = new WynikTestu()
                 {
-                    Srednia = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
-                    Mediana = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
+                    Srednia = Convert.ToUInt64(sortowniki2.unizegar.Elapsed.TotalNanoseconds),
+                    Mediana = Convert.ToUInt64(sortowniki2.unizegar.Elapsed.TotalNanoseconds),
                     OdchylenieStandardowe = 0,
                     Wariancja = 0,
                 };
@@ -77,19 +77,6 @@ public class Program
 
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
-    }
-
-    public static void WypiszTablice(int[] tablica)
-    {
-        for (uint i = 0; i < tablica.Length; i++)
-        {
-            Console.WriteLine(tablica[i]);
-        }
-    }
-
-    public static void ZapelnijLosowo(int[] tablica, int max = int.MaxValue)
-    {
-        for (int i = 0; i < tablica.Length; i++) tablica[i] = randomizer.Next(max);
     }
 
     public static jakisTypLiczbowybezZnaku Mediana <jakisTypLiczbowybezZnaku> (jakisTypLiczbowybezZnaku[] tab) 
@@ -201,4 +188,24 @@ public record struct WynikTestu
     public ulong Mediana { get; set; }
     public ulong Wariancja { get; set; }
     public ulong OdchylenieStandardowe { get; set; }
+}
+
+class Obsluga_Sortownikow
+{
+    protected static readonly Random randomizer = new();
+
+    public void WypiszTablice(int[] tablica)
+    {
+        for (uint i = 0; i < tablica.Length; i++)
+        {
+            Console.WriteLine(tablica[i]);
+        }
+    }
+
+    public void ZapelnijLosowo(int[] tablica, int max = int.MaxValue)
+    {
+        for (int i = 0; i < tablica.Length; i++) tablica[i] = randomizer.Next(max);
+    }
+
+    public int[] probnaTablica;
 }
