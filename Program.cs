@@ -72,15 +72,6 @@ public class Program
         }
 
 
-        Console.WriteLine();
-        ZapelnijLosowo(sortowniki.probnaTablica);
-        Console.WriteLine("Sortowanie...");
-
-        Console.WriteLine();
-
-        WypiszTablice(sortowniki.probnaTablica);
-
-
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
     }
