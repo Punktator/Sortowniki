@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 
 namespace Sortowniki;
 
@@ -95,6 +96,19 @@ public class Program
     {
         for (int i = 0; i < tablica.Length; i++)
             tablica[i] = randomizer.Next(max);
+    }
+
+    public static jakisTypLiczbowybezZnaku Mediana <jakisTypLiczbowybezZnaku> (jakisTypLiczbowybezZnaku[] tab) 
+        where jakisTypLiczbowybezZnaku : IUnsignedNumber<jakisTypLiczbowybezZnaku>
+    {
+        int pul = tab.Length / 2;
+        jakisTypLiczbowybezZnaku suma;
+       
+        if (tab.Length % 2 != 0) 
+            return tab[pul+1];
+        suma = tab[pul] + tab[pul+1];
+        jakisTypLiczbowybezZnaku dwa = jakisTypLiczbowybezZnaku.One + jakisTypLiczbowybezZnaku.One;
+        return suma / dwa;
     }
 }
 
