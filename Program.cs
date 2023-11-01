@@ -66,7 +66,7 @@ public class Program
 
                 sortowniki.wyniki[i] = new WynikTestu()
                 {
-                    Średnia = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
+                    Srednia = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
                     Mediana = (ulong)sortowniki.unizegar.Elapsed.TotalNanoseconds,
                     OdchylenieStandardowe = 0,
                     Wariancja = 0,
@@ -97,8 +97,8 @@ public class Program
     {                                                                              //pól tablicy 
         int pul = tab.Length / 2;                                                  //dowolnego typu
         jakisTypLiczbowybezZnaku suma;                                             //przy użyciu interfejsów
-                                                                                   //typów uogólnionych
-        if (tab.Length % 2 != 0) 
+                                                                                   //uogólnionych typów
+        if (tab.Length % 2 != 0)                                                   //liczbowych bez znaku
             return tab[pul+1];
         suma = tab[pul] + tab[pul+1];
         jakisTypLiczbowybezZnaku dwa = jakisTypLiczbowybezZnaku.One + jakisTypLiczbowybezZnaku.One;
@@ -197,7 +197,7 @@ public class Bogosort : Baza_Sortownikow
 
 public record struct WynikTestu
 {
-    public ulong Średnia { get; set; }
+    public ulong Srednia { get; set; }
     public ulong Mediana { get; set; }
     public ulong Wariancja { get; set; }
     public ulong OdchylenieStandardowe { get; set; }
