@@ -170,9 +170,11 @@ public class Bogosort : Baza_Sortownikow
 
     public void Bogosortuj(int[] tablica)
     {
+        bool gotowe;
+
         while (true)
         {
-            bool gotowe = true;
+            gotowe = true;
 
             for (uint i = 1; i < tablica.Length; i++)
             {
