@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿//Tester sortowników
+//WL 2023
+
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Sortowniki;
@@ -91,11 +94,11 @@ public class Program
     }
 
     public static jakisTypLiczbowybezZnaku Mediana <jakisTypLiczbowybezZnaku> (jakisTypLiczbowybezZnaku[] tab) 
-        where jakisTypLiczbowybezZnaku : IUnsignedNumber<jakisTypLiczbowybezZnaku>
-    {
-        int pul = tab.Length / 2;
-        jakisTypLiczbowybezZnaku suma;
-       
+        where jakisTypLiczbowybezZnaku : IUnsignedNumber<jakisTypLiczbowybezZnaku> //oblicza medianę 
+    {                                                                              //pól tablicy 
+        int pul = tab.Length / 2;                                                  //dowolnego typu
+        jakisTypLiczbowybezZnaku suma;                                             //przy użyciu interfejsów
+                                                                                   //typów uogólnionych
         if (tab.Length % 2 != 0) 
             return tab[pul+1];
         suma = tab[pul] + tab[pul+1];
@@ -109,7 +112,7 @@ public abstract class Baza_Sortownikow
     public abstract void Sortuj(int[] tablica);
 }
 
-public class Bombel : Baza_Sortownikow
+public class Bombel : Baza_Sortownikow //o, polimorfizm
 {
     public override void Sortuj(int[] tablica)
     {
