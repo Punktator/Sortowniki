@@ -34,6 +34,7 @@ public class Program
 
         Console.WriteLine("Sortowanie...");
         sortowniki.unizegar = Stopwatch.StartNew();
+        sortowniki.listaSortownikow[0].Sortuj(sortowniki.probnaTablica);
         sortowniki.unizegar.Stop();
         TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
 
