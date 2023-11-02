@@ -53,27 +53,8 @@ public class Program
 
         Console.WriteLine();
 
-        foreach (var sortownik in sortowniki.listaSortownikow)
-        {
-            for (uint i = 3; i < iteracjewTescie; i++)
-            {
-                inferfejsSortowniczy.probnaTablica = new int[i];
-                inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
-
-                sortowniki.unizegar.Restart();
-                sortownik.Sortuj(inferfejsSortowniczy.probnaTablica);
-                sortowniki.unizegar.Stop();
-
-                sortowniki.wyniki[i] = new WynikTestu()
-                {
-                    Srednia = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
-                    Mediana = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
-                    OdchylenieStandardowe = 0,
-                    Wariancja = 0,
-                };
-            }
-        }
-
+        Thread wontek1, wontek2;
+        wontek1 = new Thread(Thr)
 
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
