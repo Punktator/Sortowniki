@@ -23,7 +23,7 @@ public class Program
     public static void Main()
     {
         Obsluga_Sortownikow inferfejsSortowniczy = new();
-        var sortowniki2 = new Program();
+        var sortowniki = new Program();
 
         Console.WriteLine("Podaj rozmiar tablicy: ");
         int n = int.Parse(Console.ReadLine());
@@ -36,10 +36,10 @@ public class Program
         Console.WriteLine();
 
         Console.WriteLine("Sortowanie...");
-        sortowniki2.unizegar = Stopwatch.StartNew();
-        sortowniki2.listaSortownikow[0].Sortuj(inferfejsSortowniczy.probnaTablica);
-        sortowniki2.unizegar.Stop();
-        TimeSpan tBomblowania = sortowniki2.unizegar.Elapsed;
+        sortowniki.unizegar = Stopwatch.StartNew();
+        sortowniki.listaSortownikow[0].Sortuj(inferfejsSortowniczy.probnaTablica);
+        sortowniki.unizegar.Stop();
+        TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
 
         inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.probnaTablica);
 
@@ -53,21 +53,21 @@ public class Program
 
         Console.WriteLine();
 
-        foreach (var sortownik in sortowniki2.listaSortownikow)
+        foreach (var sortownik in sortowniki.listaSortownikow)
         {
             for (uint i = 3; i < iteracjewTescie; i++)
             {
                 inferfejsSortowniczy.probnaTablica = new int[i];
                 inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
 
-                sortowniki2.unizegar.Restart();
+                sortowniki.unizegar.Restart();
                 sortownik.Sortuj(inferfejsSortowniczy.probnaTablica);
-                sortowniki2.unizegar.Stop();
+                sortowniki.unizegar.Stop();
 
-                sortowniki2.wyniki[i] = new WynikTestu()
+                sortowniki.wyniki[i] = new WynikTestu()
                 {
-                    Srednia = Convert.ToUInt64(sortowniki2.unizegar.Elapsed.TotalNanoseconds),
-                    Mediana = Convert.ToUInt64(sortowniki2.unizegar.Elapsed.TotalNanoseconds),
+                    Srednia = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
+                    Mediana = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
                     OdchylenieStandardowe = 0,
                     Wariancja = 0,
                 };
