@@ -23,7 +23,7 @@ public class Program
     public static void Main()
     {
         Obsluga_Sortownikow inferfejsSortowniczy = new();
-        var sortowniki = new Program();
+        var sortowniki2 = new Program();
 
         Console.WriteLine("Podaj rozmiar tablicy: ");
         int n = int.Parse(Console.ReadLine());
@@ -36,10 +36,10 @@ public class Program
         Console.WriteLine();
 
         Console.WriteLine("Sortowanie...");
-        sortowniki.unizegar = Stopwatch.StartNew();
-        sortowniki.listaSortownikow[0].Sortuj(inferfejsSortowniczy.probnaTablica);
-        sortowniki.unizegar.Stop();
-        TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
+        sortowniki2.unizegar = Stopwatch.StartNew();
+        sortowniki2.listaSortownikow[0].Sortuj(inferfejsSortowniczy.probnaTablica);
+        sortowniki2.unizegar.Stop();
+        TimeSpan tBomblowania = sortowniki2.unizegar.Elapsed;
 
         inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.probnaTablica);
 
@@ -53,23 +53,42 @@ public class Program
 
         Console.WriteLine();
 
-        Thread wontek1, wontek2;
-        wontek1 = new Thread(Thr)
+        foreach (var sortownik in sortowniki2.listaSortownikow)
+        {
+            for (uint i = 3; i < iteracjewTescie; i++)
+            {
+                inferfejsSortowniczy.probnaTablica = new int[i];
+                inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
+
+                sortowniki2.unizegar.Restart();
+                sortownik.Sortuj(inferfejsSortowniczy.probnaTablica);
+                sortowniki2.unizegar.Stop();
+
+                sortowniki2.wyniki[i] = new WynikTestu()
+                {
+                    Srednia = Convert.ToUInt64(sortowniki2.unizegar.Elapsed.TotalNanoseconds),
+                    Mediana = Convert.ToUInt64(sortowniki2.unizegar.Elapsed.TotalNanoseconds),
+                    OdchylenieStandardowe = 0,
+                    Wariancja = 0,
+                };
+            }
+        }
+
 
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
     }
 
-    public static jakisTypLiczbowybezZnaku Mediana <jakisTypLiczbowybezZnaku> (jakisTypLiczbowybezZnaku[] tab) 
-        where jakisTypLiczbowybezZnaku : IUnsignedNumber<jakisTypLiczbowybezZnaku> //oblicza medianę 
+    public static pewienTypLiczbowybezZnaku Mediana <pewienTypLiczbowybezZnaku> (pewienTypLiczbowybezZnaku[] tab) 
+        where pewienTypLiczbowybezZnaku : IUnsignedNumber<pewienTypLiczbowybezZnaku> //oblicza medianę 
     {                                                                              //pól tablicy 
         int pul = tab.Length / 2;                                                  //dowolnego typu
-        jakisTypLiczbowybezZnaku suma;                                             //przy użyciu interfejsów
+        pewienTypLiczbowybezZnaku suma;                                             //przy użyciu interfejsów
                                                                                    //uogólnionych typów
         if (tab.Length % 2 != 0)                                                   //liczbowych bez znaku
             return tab[pul+1];
         suma = tab[pul] + tab[pul+1];
-        jakisTypLiczbowybezZnaku dwa = jakisTypLiczbowybezZnaku.One + jakisTypLiczbowybezZnaku.One;
+        pewienTypLiczbowybezZnaku dwa = pewienTypLiczbowybezZnaku.One + pewienTypLiczbowybezZnaku.One;
         return suma / dwa;
     }
 }
