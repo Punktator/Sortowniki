@@ -81,11 +81,11 @@ public class Program
 
     public static pewienTypLiczbowybezZnaku Mediana <pewienTypLiczbowybezZnaku> (pewienTypLiczbowybezZnaku[] tab) 
         where pewienTypLiczbowybezZnaku : IUnsignedNumber<pewienTypLiczbowybezZnaku> //oblicza medianę 
-    {                                                                              //pól tablicy 
-        int pul = tab.Length / 2;                                                  //dowolnego typu
-        pewienTypLiczbowybezZnaku suma;                                             //przy użyciu interfejsów
-                                                                                   //uogólnionych typów
-        if (tab.Length % 2 != 0)                                                   //liczbowych bez znaku
+    {                                                                                //pól tablicy 
+        int pul = tab.Length / 2;                                                    //dowolnego typu
+        pewienTypLiczbowybezZnaku suma;                                              //przy użyciu interfejsów
+                                                                                     //uogólnionych typów
+        if (tab.Length % 2 != 0)                                                     //liczbowych bez znaku
             return tab[pul+1];
         suma = tab[pul] + tab[pul+1];
         pewienTypLiczbowybezZnaku dwa = pewienTypLiczbowybezZnaku.One + pewienTypLiczbowybezZnaku.One;
