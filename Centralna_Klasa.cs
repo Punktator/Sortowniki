@@ -6,13 +6,13 @@ using System.Numerics;
 
 namespace Sortowniki;
 
-public class Program
+public class Centralna_Klasa
 {
     public const ushort iteracjewTescie = 2500;
 
     Stopwatch unizegar = new();
     protected static readonly Random randomizer = new();
-    public WynikTestu[] wyniki = new WynikTestu[iteracjewTescie];
+    public Wynik_Testu[] wyniki = new Wynik_Testu[iteracjewTescie];
     private readonly List<Baza_Sortownikow> listaSortownikow = new()
     {
         new Bombel(),
@@ -22,26 +22,26 @@ public class Program
 
     public static void Main()
     {
-        Obsluga_Sortownikow inferfejsSortowniczy = new();
-        var sortowniki = new Program();
+        Obsluga_Tablic inferfejsSortowniczy;
+        var sortowniki = new Centralna_Klasa();
 
         Console.WriteLine("Podaj rozmiar tablicy: ");
         int n = int.Parse(Console.ReadLine());
-        inferfejsSortowniczy.probnaTablica = new int[n];
+        inferfejsSortowniczy = new Obsluga_Tablic(n);
         
-        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
+        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
 
-        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.probnaTablica);
+        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
 
         Console.WriteLine();
 
         Console.WriteLine("Sortowanie...");
         sortowniki.unizegar = Stopwatch.StartNew();
-        sortowniki.listaSortownikow[0].Sortuj(inferfejsSortowniczy.probnaTablica);
+        sortowniki.listaSortownikow[0].Sortuj(inferfejsSortowniczy.tablica);
         sortowniki.unizegar.Stop();
         TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
 
-        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.probnaTablica);
+        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
 
         Console.WriteLine();
 
@@ -49,7 +49,7 @@ public class Program
         Console.WriteLine(tBomblowania);
 
 
-        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
+        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
 
         Console.WriteLine();
 
@@ -57,14 +57,14 @@ public class Program
         {
             for (uint i = 3; i < iteracjewTescie; i++)
             {
-                inferfejsSortowniczy.probnaTablica = new int[i];
-                inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.probnaTablica);
+                inferfejsSortowniczy.tablica = new int[i];
+                inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
 
                 sortowniki.unizegar.Restart();
-                sortownik.Sortuj(inferfejsSortowniczy.probnaTablica);
+                sortownik.Sortuj(inferfejsSortowniczy.tablica);
                 sortowniki.unizegar.Stop();
 
-                sortowniki.wyniki[i] = new WynikTestu()
+                sortowniki.wyniki[i] = new Wynik_Testu()
                 {
                     Srednia = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
                     Mediana = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
@@ -77,19 +77,6 @@ public class Program
 
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
-    }
-
-    public static pewienTypLiczbowybezZnaku Mediana <pewienTypLiczbowybezZnaku> (pewienTypLiczbowybezZnaku[] tab) 
-        where pewienTypLiczbowybezZnaku : IUnsignedNumber<pewienTypLiczbowybezZnaku> //oblicza medianę 
-    {                                                                                //pól tablicy 
-        int pul = tab.Length / 2;                                                    //dowolnego typu
-        pewienTypLiczbowybezZnaku suma;                                              //przy użyciu interfejsów
-                                                                                     //uogólnionych typów
-        if (tab.Length % 2 != 0)                                                     //liczbowych bez znaku
-            return tab[pul+1];
-        suma = tab[pul] + tab[pul+1];
-        pewienTypLiczbowybezZnaku dwa = pewienTypLiczbowybezZnaku.One + pewienTypLiczbowybezZnaku.One;
-        return suma / dwa;
     }
 }
 
@@ -182,7 +169,7 @@ public class Bogosort : Baza_Sortownikow
     }
 }
 
-public record struct WynikTestu
+public record struct Wynik_Testu
 {
     public ulong Srednia { get; set; }
     public ulong Mediana { get; set; }
@@ -190,9 +177,10 @@ public record struct WynikTestu
     public ulong OdchylenieStandardowe { get; set; }
 }
 
-class Obsluga_Sortownikow
+class Obsluga_Tablic
 {
     protected static readonly Random randomizer = new();
+    public int[] tablica;
 
     public void WypiszTablice(int[] tablica)
     {
@@ -207,5 +195,22 @@ class Obsluga_Sortownikow
         for (int i = 0; i < tablica.Length; i++) tablica[i] = randomizer.Next(max);
     }
 
-    public int[] probnaTablica;
+    public Obsluga_Tablic(int rozmiarTablicy) 
+    {
+        tablica = new int[rozmiarTablicy];
+        ZapelnijLosowo(tablica);
+    }
+    
+    public static pewienTypLiczbowybezZnaku Mediana<pewienTypLiczbowybezZnaku>(pewienTypLiczbowybezZnaku[] tab)
+        where pewienTypLiczbowybezZnaku : IUnsignedNumber<pewienTypLiczbowybezZnaku> //oblicza medianę 
+    {                                                                                //pól tablicy 
+        int pul = tab.Length / 2;                                                    //dowolnego typu
+        pewienTypLiczbowybezZnaku suma;                                              //przy użyciu interfejsów
+                                                                                     //uogólnionych typów
+        if (tab.Length % 2 != 0)                                                     //liczbowych bez znaku
+            return tab[pul + 1];
+        suma = tab[pul] + tab[pul + 1];
+        pewienTypLiczbowybezZnaku dwa = pewienTypLiczbowybezZnaku.One + pewienTypLiczbowybezZnaku.One;
+        return suma / dwa;
+    }
 }
