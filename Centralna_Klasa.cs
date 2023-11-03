@@ -30,8 +30,6 @@ public class Centralna_Klasa
         inferfejsSortowniczy1 = new Obsluga_Tablic(n);
         interfejsSortowniczy2 = new Obsluga_Tablic(n);
         interfejsSortowniczy3 = new Obsluga_Tablic(n);
-        
-        inferfejsSortowniczy1.ZapelnijLosowo(inferfejsSortowniczy1.tablica);
 
         inferfejsSortowniczy1.WypiszTablice(inferfejsSortowniczy1.tablica);
 
@@ -49,9 +47,6 @@ public class Centralna_Klasa
 
         Console.Write("T = ");
         Console.WriteLine(tBomblowania);
-
-
-        inferfejsSortowniczy1.ZapelnijLosowo(inferfejsSortowniczy1.tablica);
 
         Console.WriteLine();
 
