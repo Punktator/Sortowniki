@@ -16,32 +16,34 @@ public class Centralna_Klasa
     private readonly List<Baza_Sortownikow> listaSortownikow = new()
     {
         new Bombel(),
-        new Bogosort(),
         new Gnom()
     };
 
     public static void Main()
     {
-        Obsluga_Tablic inferfejsSortowniczy;
+        Obsluga_Tablic inferfejsSortowniczy1, interfejsSortowniczy2, interfejsSortowniczy3;
         var sortowniki = new Centralna_Klasa();
 
         Console.WriteLine("Podaj rozmiar tablicy: ");
         int n = int.Parse(Console.ReadLine());
-        inferfejsSortowniczy = new Obsluga_Tablic(n);
-        
-        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
 
-        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
+        inferfejsSortowniczy1 = new Obsluga_Tablic(n);
+        interfejsSortowniczy2 = new Obsluga_Tablic(n);
+        interfejsSortowniczy3 = new Obsluga_Tablic(n);
+        
+        inferfejsSortowniczy1.ZapelnijLosowo(inferfejsSortowniczy1.tablica);
+
+        inferfejsSortowniczy1.WypiszTablice(inferfejsSortowniczy1.tablica);
 
         Console.WriteLine();
 
         Console.WriteLine("Sortowanie...");
         sortowniki.unizegar = Stopwatch.StartNew();
-        sortowniki.listaSortownikow[0].Sortuj(inferfejsSortowniczy.tablica);
+        sortowniki.listaSortownikow[0].Sortuj(inferfejsSortowniczy1.tablica);
         sortowniki.unizegar.Stop();
         TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
 
-        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
+        inferfejsSortowniczy1.WypiszTablice(inferfejsSortowniczy1.tablica);
 
         Console.WriteLine();
 
@@ -49,30 +51,12 @@ public class Centralna_Klasa
         Console.WriteLine(tBomblowania);
 
 
-        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
+        inferfejsSortowniczy1.ZapelnijLosowo(inferfejsSortowniczy1.tablica);
 
         Console.WriteLine();
 
-        foreach (var sortownik in sortowniki.listaSortownikow)
-        {
-            for (uint i = 3; i < iteracjewTescie; i++)
-            {
-                inferfejsSortowniczy.tablica = new int[i];
-                inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
-
-                sortowniki.unizegar.Restart();
-                sortownik.Sortuj(inferfejsSortowniczy.tablica);
-                sortowniki.unizegar.Stop();
-
-                sortowniki.wyniki[i] = new Wynik_Testu()
-                {
-                    Srednia = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
-                    Mediana = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
-                    OdchylenieStandardowe = 0,
-                    Wariancja = 0,
-                };
-            }
-        }
+        Parallel.Invoke(() => sortowniki.listaSortownikow[0].Sortuj(interfejsSortowniczy2.tablica),
+            () => sortowniki.listaSortownikow[1].Sortuj(interfejsSortowniczy3.tablica));
 
 
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
