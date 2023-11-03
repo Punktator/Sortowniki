@@ -28,8 +28,6 @@ public class Centralna_Klasa
         Console.WriteLine("Podaj rozmiar tablicy: ");
         int n = int.Parse(Console.ReadLine());
         inferfejsSortowniczy = new Obsluga_Tablic(n);
-        
-        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
 
         inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
 
@@ -49,16 +47,13 @@ public class Centralna_Klasa
         Console.WriteLine(tBomblowania);
 
 
-        inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
-
         Console.WriteLine();
 
         foreach (var sortownik in sortowniki.listaSortownikow)
         {
             for (uint i = 3; i < iteracjewTescie; i++)
             {
-                inferfejsSortowniczy.tablica = new int[i];
-                inferfejsSortowniczy.ZapelnijLosowo(inferfejsSortowniczy.tablica);
+                inferfejsSortowniczy = new Obsluga_Tablic((int)i);
 
                 sortowniki.unizegar.Restart();
                 sortownik.Sortuj(inferfejsSortowniczy.tablica);
