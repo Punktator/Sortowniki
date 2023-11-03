@@ -70,6 +70,11 @@ public class Centralna_Klasa
         }
 
 
+        Koniec();
+    }
+
+    private static void Koniec()
+    {
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
     }
