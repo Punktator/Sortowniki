@@ -53,8 +53,14 @@ public class CentralnaKlasa
                 Console.WriteLine($"{dlugosc,10:# ###} elementów: {wynik.Srednia.TotalMilliseconds,9:# ##0.000}ms");
             }
             Console.WriteLine();
-        }
 
+
+            Koniec();
+        }
+}
+
+    private static void Koniec()
+    {
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ReadKey();
     }
