@@ -21,23 +21,26 @@ public class Centralna_Klasa
         {new Bogosort().nazwa, new Bogosort()}
     };
     
-
     public static void Main()
     {
         Obsluga_Tablic inferfejsSortowniczy;
-        var sortowniki = new Centralna_Klasa();
 
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("Podaj rozmiar tablicy: ");
+        Console.ResetColor();
         int n = int.Parse(Console.ReadLine());
         inferfejsSortowniczy = new Obsluga_Tablic(n);
 
-        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
+        //inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
 
         Console.WriteLine();
 
+        Console.ForegroundColor = ConsoleColor.DarkGray;
         Console.WriteLine("Sortowanie...");
+        Console.ResetColor();
+        
         unizegar = Stopwatch.StartNew();
-        slownikSortownikuw["Bąbelkowe"].Sortuj(inferfejsSortowniczy.tablica);
+        slownikSortownikuw["Szybkie(medianowe)"].Sortuj(inferfejsSortowniczy.tablica);
         unizegar.Stop();
         TimeSpan tBomblowania = unizegar.Elapsed;
 
@@ -51,7 +54,7 @@ public class Centralna_Klasa
 
         Console.WriteLine();
 
-        foreach (var sortownik in slownikSortownikuw)
+        /*foreach (var sortownik in slownikSortownikuw)
         {
             for (uint i = 3; i < iteracjewTescie; i++)
             {
@@ -69,7 +72,7 @@ public class Centralna_Klasa
                     Wariancja = 0,
                 };
             }
-        }
+        }*/
 
 
         Koniec();
@@ -77,142 +80,11 @@ public class Centralna_Klasa
 
     private static void Koniec()
     {
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
+        Console.ResetColor();
         Console.ReadKey();
-    }
-}
-
-public abstract class Baza_Sortownikow
-{
-    public abstract void Sortuj(int[] tablica);
-    public abstract string nazwa { get; }
-}
-
-public class Bombel : Baza_Sortownikow //o, polimorfizm
-{
-    public override string nazwa => "Bąbelkowe";
-
-    public override void Sortuj(int[] tablica)
-    {
-        Bombelkuj(tablica);
-    }
-
-    public static void Bombelkuj(int[] tablica)
-    {
-        bool flaga;
-        do
-        {
-            flaga = false;
-            for (uint i = 0; i < tablica.Length - 1; i++)
-            {
-                if (tablica[i] > tablica[i + 1])
-                {
-                    (tablica[i], tablica[i + 1]) = (tablica[i + 1], tablica[i]);
-                    flaga = true;
-                }
-            }
-        } while (flaga);
-    }
-}
-
-public class Gnom : Baza_Sortownikow
-{
-    public override string nazwa => "Gnomowe";
-
-    public override void Sortuj(int[] tablica)
-    {
-        Gnomuj(tablica);
-    }
-
-    public static void Gnomuj(int[] tablica)
-    {
-        uint i = 0;
-        while (i < tablica.Length - 1)
-        {
-            if (tablica[i] > tablica[i + 1])
-            {
-                (tablica[i], tablica[i + 1]) = (tablica[i + 1], tablica[i]);
-                if (i > 0) i--;
-            }
-            else i++;
-        }
-    }
-}
-
-public class SzybkoSort : Baza_Sortownikow
-{
-    public override string nazwa => "Szybkie";
-
-    static void SzybkoSortuj(int[] tab, int lewy, int prawy)
-    {
-        if (prawy <= lewy) return;
-
-        int i = lewy - 1;
-        int j = prawy + 1;
-        int pivot = tab[(lewy + prawy) / 2]; //wybieramy punkt odniesienia
-
-        while (true)
-        {
-            //szukam elementu większego lub równego piwot stojącego po prawej stronie wartości pivot
-            while (pivot > tab[++i]);
-
-            //szukam elementu mniejszego lub równego pivot stojąceg po lewej stronie wartości pivot
-            while (pivot < tab[--j]);
-
-            //jeśli liczniki się nie minęły to zamień elementy ze sobą stojące po niewłaściwej stronie pivot
-            if (i <= j)
-                (tab[i], tab[j]) = (tab[j], tab[i]);
-            else
-                break;
-        }
-
-        if (j > lewy)
-            SzybkoSortuj(tab, lewy, j);
-        if (i < prawy)
-            SzybkoSortuj(tab, i, prawy);
-    }
-
-    public override void Sortuj(int[] tablica)
-    {
-        SzybkoSortuj(tablica, 0, tablica.Length - 1);
-    }
-}
-
-public class Bogosort : Baza_Sortownikow
-{
-    public override string nazwa => "Bogosort";
-    private readonly Random RNG = new();
-
-    public override void Sortuj(int[] tablica)
-    {
-        Bogosortuj(tablica);
-    }
-
-    public void Bogosortuj(int[] tablica)
-    {
-        bool gotowe;
-
-        while (true)
-        {
-            gotowe = true;
-
-            for (uint i = 1; i < tablica.Length; i++)
-            {
-                if (tablica[i - 1] > tablica[i])
-                {
-                    gotowe = false;
-                    break;
-                }
-            }
-
-            if (gotowe) break;
-
-            for (uint i = 0; i < tablica.Length; i++)
-            {
-                int losowyIndeks = RNG.Next(tablica.Length);
-                (tablica[i], tablica[losowyIndeks]) = (tablica[losowyIndeks], tablica[i]);
-            }
-        }
     }
 }
 
