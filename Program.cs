@@ -13,12 +13,13 @@ public class Centralna_Klasa
     Stopwatch unizegar = new();
     protected static readonly Random randomizer = new();
     public Wynik_Testu[] wyniki = new Wynik_Testu[iteracjewTescie];
-    private static readonly List<Baza_Sortownikow> listaSortownikow = new()
+    public static readonly Dictionary<string, Baza_Sortownikow> slownikSortownikuw = new()
     {
-        new Bombel(),
-        new Bogosort(),
-        new Gnom()
+        {new Bombel().nazwaSortu, new Bombel() },
+        {new Gnom().nazwaSortu, new Gnom()},
+        {new Bogosort().nazwaSortu, new Bogosort()}
     };
+    
 
     public static void Main()
     {
@@ -35,7 +36,7 @@ public class Centralna_Klasa
 
         Console.WriteLine("Sortowanie...");
         sortowniki.unizegar = Stopwatch.StartNew();
-        listaSortownikow[0].Sortuj(inferfejsSortowniczy.tablica);
+        slownikSortownikuw["Bąbelkowe"].Sortuj(inferfejsSortowniczy.tablica);
         sortowniki.unizegar.Stop();
         TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
 
@@ -49,14 +50,14 @@ public class Centralna_Klasa
 
         Console.WriteLine();
 
-        foreach (var sortownik in listaSortownikow)
+        foreach (var sortownik in slownikSortownikuw)
         {
             for (uint i = 3; i < iteracjewTescie; i++)
             {
                 inferfejsSortowniczy = new Obsluga_Tablic((int)i);
 
                 sortowniki.unizegar.Restart();
-                sortownik.Sortuj(inferfejsSortowniczy.tablica);
+                sortownik.Value.Sortuj(inferfejsSortowniczy.tablica);
                 sortowniki.unizegar.Stop();
 
                 sortowniki.wyniki[i] = new Wynik_Testu()
