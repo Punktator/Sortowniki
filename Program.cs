@@ -13,7 +13,7 @@ public class Centralna_Klasa
     Stopwatch unizegar = new();
     protected static readonly Random randomizer = new();
     public Wynik_Testu[] wyniki = new Wynik_Testu[iteracjewTescie];
-    private readonly List<Baza_Sortownikow> listaSortownikow = new()
+    private static readonly List<Baza_Sortownikow> listaSortownikow = new()
     {
         new Bombel(),
         new Bogosort(),
@@ -35,7 +35,7 @@ public class Centralna_Klasa
 
         Console.WriteLine("Sortowanie...");
         sortowniki.unizegar = Stopwatch.StartNew();
-        sortowniki.listaSortownikow[0].Sortuj(inferfejsSortowniczy.tablica);
+        listaSortownikow[0].Sortuj(inferfejsSortowniczy.tablica);
         sortowniki.unizegar.Stop();
         TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
 
@@ -49,7 +49,7 @@ public class Centralna_Klasa
 
         Console.WriteLine();
 
-        foreach (var sortownik in sortowniki.listaSortownikow)
+        foreach (var sortownik in listaSortownikow)
         {
             for (uint i = 3; i < iteracjewTescie; i++)
             {
@@ -83,10 +83,13 @@ public class Centralna_Klasa
 public abstract class Baza_Sortownikow
 {
     public abstract void Sortuj(int[] tablica);
+    public abstract string nazwaSortu { get; }
 }
 
 public class Bombel : Baza_Sortownikow //o, polimorfizm
 {
+    public override string nazwaSortu => "Bąbelkowe";
+
     public override void Sortuj(int[] tablica)
     {
         Bombelkuj(tablica);
@@ -112,6 +115,8 @@ public class Bombel : Baza_Sortownikow //o, polimorfizm
 
 public class Gnom : Baza_Sortownikow
 {
+    public override string nazwaSortu => "Sortowanie gnoma";
+
     public override void Sortuj(int[] tablica)
     {
         Gnomuj(tablica);
@@ -134,6 +139,7 @@ public class Gnom : Baza_Sortownikow
 
 public class Bogosort : Baza_Sortownikow
 {
+    public override string nazwaSortu => "Bogosort";
     private readonly Random RNG = new();
 
     public override void Sortuj(int[] tablica)
