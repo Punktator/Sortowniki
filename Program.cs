@@ -10,14 +10,15 @@ public class Centralna_Klasa
 {
     public const ushort iteracjewTescie = 2500;
 
-    Stopwatch unizegar = new();
+    protected static Stopwatch unizegar = new();
     protected static readonly Random randomizer = new();
     public Wynik_Testu[] wyniki = new Wynik_Testu[iteracjewTescie];
     public static readonly Dictionary<string, Baza_Sortownikow> slownikSortownikuw = new()
     {
-        {new Bombel().nazwaSortu, new Bombel() },
-        {new Gnom().nazwaSortu, new Gnom()},
-        {new Bogosort().nazwaSortu, new Bogosort()}
+        {new Bombel().nazwa, new Bombel() },
+        {new Gnom().nazwa, new Gnom()},
+        {new SzybkoSort().nazwa, new SzybkoSort()},
+        {new Bogosort().nazwa, new Bogosort()}
     };
     
 
@@ -35,10 +36,10 @@ public class Centralna_Klasa
         Console.WriteLine();
 
         Console.WriteLine("Sortowanie...");
-        sortowniki.unizegar = Stopwatch.StartNew();
+        unizegar = Stopwatch.StartNew();
         slownikSortownikuw["Bąbelkowe"].Sortuj(inferfejsSortowniczy.tablica);
-        sortowniki.unizegar.Stop();
-        TimeSpan tBomblowania = sortowniki.unizegar.Elapsed;
+        unizegar.Stop();
+        TimeSpan tBomblowania = unizegar.Elapsed;
 
         inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
 
@@ -56,14 +57,14 @@ public class Centralna_Klasa
             {
                 inferfejsSortowniczy = new Obsluga_Tablic((int)i);
 
-                sortowniki.unizegar.Restart();
+                unizegar.Restart();
                 sortownik.Value.Sortuj(inferfejsSortowniczy.tablica);
-                sortowniki.unizegar.Stop();
+                unizegar.Stop();
 
                 sortowniki.wyniki[i] = new Wynik_Testu()
                 {
-                    Srednia = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
-                    Mediana = Convert.ToUInt64(sortowniki.unizegar.Elapsed.TotalNanoseconds),
+                    Srednia = Convert.ToUInt64(unizegar.Elapsed.TotalNanoseconds),
+                    Mediana = Convert.ToUInt64(unizegar.Elapsed.TotalNanoseconds),
                     OdchylenieStandardowe = 0,
                     Wariancja = 0,
                 };
@@ -84,12 +85,12 @@ public class Centralna_Klasa
 public abstract class Baza_Sortownikow
 {
     public abstract void Sortuj(int[] tablica);
-    public abstract string nazwaSortu { get; }
+    public abstract string nazwa { get; }
 }
 
 public class Bombel : Baza_Sortownikow //o, polimorfizm
 {
-    public override string nazwaSortu => "Bąbelkowe";
+    public override string nazwa => "Bąbelkowe";
 
     public override void Sortuj(int[] tablica)
     {
@@ -116,7 +117,7 @@ public class Bombel : Baza_Sortownikow //o, polimorfizm
 
 public class Gnom : Baza_Sortownikow
 {
-    public override string nazwaSortu => "Sortowanie gnoma";
+    public override string nazwa => "Gnomowe";
 
     public override void Sortuj(int[] tablica)
     {
@@ -138,9 +139,48 @@ public class Gnom : Baza_Sortownikow
     }
 }
 
+public class SzybkoSort : Baza_Sortownikow
+{
+    public override string nazwa => "Szybkie";
+
+    static void SzybkoSortuj(int[] tab, int lewy, int prawy)
+    {
+        if (prawy <= lewy) return;
+
+        int i = lewy - 1;
+        int j = prawy + 1;
+        int pivot = tab[(lewy + prawy) / 2]; //wybieramy punkt odniesienia
+
+        while (true)
+        {
+            //szukam elementu większego lub równego piwot stojącego po prawej stronie wartości pivot
+            while (pivot > tab[++i]);
+
+            //szukam elementu mniejszego lub równego pivot stojąceg po lewej stronie wartości pivot
+            while (pivot < tab[--j]);
+
+            //jeśli liczniki się nie minęły to zamień elementy ze sobą stojące po niewłaściwej stronie pivot
+            if (i <= j)
+                (tab[i], tab[j]) = (tab[j], tab[i]);
+            else
+                break;
+        }
+
+        if (j > lewy)
+            SzybkoSortuj(tab, lewy, j);
+        if (i < prawy)
+            SzybkoSortuj(tab, i, prawy);
+    }
+
+    public override void Sortuj(int[] tablica)
+    {
+        SzybkoSortuj(tablica, 0, tablica.Length - 1);
+    }
+}
+
 public class Bogosort : Baza_Sortownikow
 {
-    public override string nazwaSortu => "Bogosort";
+    public override string nazwa => "Bogosort";
     private readonly Random RNG = new();
 
     public override void Sortuj(int[] tablica)
