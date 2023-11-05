@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using System.Numerics;
+using System.Text;
 
 namespace Sortowniki;
 
@@ -11,7 +12,6 @@ public class Centralna_Klasa
     public const ushort iteracjewTescie = 2500;
 
     protected static Stopwatch unizegar = new();
-    protected static readonly Random randomizer = new();
     public Wynik_Testu[] wyniki = new Wynik_Testu[iteracjewTescie];
     public static readonly Dictionary<string, Baza_Sortownikow> slownikSortownikuw = new()
     {
@@ -44,7 +44,7 @@ public class Centralna_Klasa
         unizegar.Stop();
         TimeSpan tBomblowania = unizegar.Elapsed;
 
-        inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
+        Console.WriteLine(inferfejsSortowniczy.ToString(inferfejsSortowniczy.tablica));
 
         Console.WriteLine();
 
@@ -101,12 +101,15 @@ class Obsluga_Tablic
     protected static readonly Random randomizer = new();
     public int[] tablica;
 
-    public void WypiszTablice(int[] tablica)
+    public string ToString(int[] tablica)
     {
+        StringBuilder bufor = new();
         for (uint i = 0; i < tablica.Length; i++)
         {
-            Console.WriteLine(tablica[i]);
+            bufor.Append(tablica[i]);
+            bufor.Append('\n');
         }
+        return bufor.ToString();
     }
 
     public void ZapelnijLosowo(int[] tablica, int max = int.MaxValue)
