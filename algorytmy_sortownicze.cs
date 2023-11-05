@@ -129,6 +129,8 @@ public class SzybkoSort : Baza_Sortownikow
     }
 }
 
+
+
 public class Bogosort : Baza_Sortownikow
 {
     public override string nazwa => "Bogosort";
@@ -166,4 +168,3 @@ public class Bogosort : Baza_Sortownikow
         }
     }
 }
-

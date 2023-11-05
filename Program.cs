@@ -40,11 +40,11 @@ public class Centralna_Klasa
         Console.ResetColor();
         
         unizegar = Stopwatch.StartNew();
-        slownikSortownikuw["Szybkie(medianowe)"].Sortuj(inferfejsSortowniczy.tablica);
+        slownikSortownikuw["Bogosort"].Sortuj(inferfejsSortowniczy.tablica);
         unizegar.Stop();
         TimeSpan tBomblowania = unizegar.Elapsed;
 
-        Console.WriteLine(inferfejsSortowniczy.ToString(inferfejsSortowniczy.tablica));
+        Console.WriteLine(Obsluga_Tablic.ToString(inferfejsSortowniczy.tablica));
 
         Console.WriteLine();
 
@@ -101,7 +101,7 @@ class Obsluga_Tablic
     protected static readonly Random randomizer = new();
     public int[] tablica;
 
-    public string ToString(int[] tablica)
+    public static string ToString(int[] tablica)
     {
         StringBuilder bufor = new();
         for (uint i = 0; i < tablica.Length; i++)
