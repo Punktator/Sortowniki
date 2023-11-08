@@ -129,7 +129,28 @@ public class SzybkoSort : Baza_Sortownikow
     }
 }
 
+public class Wstawianie : Baza_Sortownikow
+{
+    public override string nazwa => "Sortowanie przez wstawianie";
 
+    public void SortujWstawiajonc(int[] tablica) //nie działa
+    {
+        int i;
+        for (int n = 1; n < tablica.Length; n++)
+        {
+            int a = tablica[n];
+            for (i = n - 1; i >= 0 && tablica[i] > a; i--)
+                tablica[i+1] = tablica[i];
+            
+            tablica[i + 1] = a;
+        }
+    }
+
+    public override void Sortuj(int[] tablica)
+    {
+        SortujWstawiajonc(tablica);
+    }
+}
 
 public class Bogosort : Baza_Sortownikow
 {

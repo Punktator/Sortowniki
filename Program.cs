@@ -2,6 +2,7 @@
 //WL 2023
 
 using System.Diagnostics;
+using System.Globalization;
 using System.Numerics;
 using System.Text;
 
@@ -9,29 +10,30 @@ namespace Sortowniki;
 
 public class Centralna_Klasa
 {
-    public const ushort iteracjewTescie = 2500;
+    public const uint ITERACJE_W_TESCIE = 2500;
 
     protected static Stopwatch unizegar = new();
-    public Wynik_Testu[] wyniki = new Wynik_Testu[iteracjewTescie];
+    public Wynik_Testu[] wyniki = new Wynik_Testu[ITERACJE_W_TESCIE];
     public static readonly Dictionary<string, Baza_Sortownikow> slownikSortownikuw = new()
     {
         {new Bombel().nazwa, new Bombel() },
         {new Gnom().nazwa, new Gnom()},
         {new SzybkoSort().nazwa, new SzybkoSort()},
+        {new Wstawianie().nazwa, new Wstawianie ()},
         {new Bogosort().nazwa, new Bogosort()}
     };
     
     public static void Main()
     {
         Obsluga_Tablic inferfejsSortowniczy;
-
+      
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("Podaj rozmiar tablicy: ");
         Console.ResetColor();
         int n = int.Parse(Console.ReadLine());
         inferfejsSortowniczy = new Obsluga_Tablic(n);
 
-        //inferfejsSortowniczy.WypiszTablice(inferfejsSortowniczy.tablica);
+        Console.WriteLine(Obsluga_Tablic.ToString(inferfejsSortowniczy.tablica));
 
         Console.WriteLine();
 
@@ -40,7 +42,7 @@ public class Centralna_Klasa
         Console.ResetColor();
         
         unizegar = Stopwatch.StartNew();
-        slownikSortownikuw["Bogosort"].Sortuj(inferfejsSortowniczy.tablica);
+        slownikSortownikuw["Sortowanie przez wstawianie"].Sortuj(inferfejsSortowniczy.tablica);
         unizegar.Stop();
         TimeSpan tBomblowania = unizegar.Elapsed;
 
@@ -56,7 +58,7 @@ public class Centralna_Klasa
 
         /*foreach (var sortownik in slownikSortownikuw)
         {
-            for (uint i = 3; i < iteracjewTescie; i++)
+            for (uint i = 3; i < ITERACJE_W_TESCIE; i++)
             {
                 inferfejsSortowniczy = new Obsluga_Tablic((int)i);
 
@@ -75,10 +77,10 @@ public class Centralna_Klasa
         }*/
 
 
-        Koniec();
+        KoniecProgramu();
     }
 
-    private static void Koniec()
+    private static void KoniecProgramu()
     {
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Green;
@@ -123,16 +125,54 @@ class Obsluga_Tablic
         ZapelnijLosowo(tablica);
     }
     
-    public static pewienTypLiczbowybezZnaku Mediana<pewienTypLiczbowybezZnaku>(pewienTypLiczbowybezZnaku[] tab)
-        where pewienTypLiczbowybezZnaku : IUnsignedNumber<pewienTypLiczbowybezZnaku> //oblicza medianę 
+    public static pewienTypLiczbowyzeZnakiem Mediana<pewienTypLiczbowyzeZnakiem>(pewienTypLiczbowyzeZnakiem[] tab)
+        where pewienTypLiczbowyzeZnakiem : ISignedNumber<pewienTypLiczbowyzeZnakiem> //oblicza medianę 
     {                                                                                //pól tablicy 
         int pul = tab.Length / 2;                                                    //dowolnego typu
-        pewienTypLiczbowybezZnaku suma;                                              //przy użyciu interfejsów
+        pewienTypLiczbowyzeZnakiem suma;                                              //przy użyciu interfejsów
                                                                                      //uogólnionych typów
         if (tab.Length % 2 != 0)                                                     //liczbowych bez znaku
             return tab[pul + 1];
         suma = tab[pul] + tab[pul + 1];
-        pewienTypLiczbowybezZnaku dwa = pewienTypLiczbowybezZnaku.One + pewienTypLiczbowybezZnaku.One;
+        pewienTypLiczbowyzeZnakiem dwa = pewienTypLiczbowyzeZnakiem.One + pewienTypLiczbowyzeZnakiem.One;
         return suma / dwa;
+    }
+
+//    public static pewienTypLiczbowyzeZnakiem Srednia<pewienTypliczbowyzeZnakiem>(pewienTypliczbowyzeZnakiem[] tab)
+//        where pewienTypliczbowyzeZnakiem : ISignedNumber<pewienTypliczbowyzeZnakiem>
+//    {
+//        pewienTypliczbowyzeZnakiem suma = pewienTypliczbowyzeZnakiem.One;
+//        pewienTypliczbowyzeZnakiem d = pewienTypliczbowyzeZnakiem.TryParse(tab.Length)
+        
+           
+//    }
+    
+    public ulong SredniaArytmetycznaEle(ulong[] tablica)
+    {
+        ulong suma = 0;
+        ulong srednia;
+
+        for (uint i = 0; i<tablica.Length; i++)
+            suma += tablica[i];
+
+        srednia = suma / Convert.ToUInt64(tablica.Length);
+
+        return srednia;
+    }
+
+    public ulong Wariancja(ulong[] tablica)
+    {
+        ulong czynnik;
+        ulong srednia = SredniaArytmetycznaEle(tablica);
+        ulong suma = 0;
+
+        for (uint i = 0; i<tablica.Length; i++)
+        {
+            czynnik = tablica[i] - srednia;
+            czynnik *= czynnik;
+            suma += czynnik;
+        }
+
+        return suma / Convert.ToUInt64(tablica.LongLength);
     }
 }
