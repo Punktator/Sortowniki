@@ -2,8 +2,6 @@
 //WL 2023
 
 using System.Diagnostics;
-using System.Globalization;
-using System.Numerics;
 using System.Text;
 
 namespace Sortowniki;
@@ -125,27 +123,27 @@ class Obsluga_Tablic
         ZapelnijLosowo(tablica);
     }
     
-    public static pewienTypLiczbowyzeZnakiem Mediana<pewienTypLiczbowyzeZnakiem>(pewienTypLiczbowyzeZnakiem[] tab)
-        where pewienTypLiczbowyzeZnakiem : ISignedNumber<pewienTypLiczbowyzeZnakiem> //oblicza medianę 
-    {                                                                                //pól tablicy 
-        int pul = tab.Length / 2;                                                    //dowolnego typu
-        pewienTypLiczbowyzeZnakiem suma;                                              //przy użyciu interfejsów
-                                                                                     //uogólnionych typów
-        if (tab.Length % 2 != 0)                                                     //liczbowych bez znaku
+    public static ulong Mediana(ulong[] tab)
+    {                                                                                 
+        int pul = tab.Length / 2;                                                   
+                                                
+                                                                                     
+        if (tab.Length % 2 != 0)                                                
             return tab[pul + 1];
-        suma = tab[pul] + tab[pul + 1];
-        pewienTypLiczbowyzeZnakiem dwa = pewienTypLiczbowyzeZnakiem.One + pewienTypLiczbowyzeZnakiem.One;
-        return suma / dwa;
+        return (tab[pul] + tab[pul + 1]) / 2;
     }
 
-//    public static pewienTypLiczbowyzeZnakiem Srednia<pewienTypliczbowyzeZnakiem>(pewienTypliczbowyzeZnakiem[] tab)
-//        where pewienTypliczbowyzeZnakiem : ISignedNumber<pewienTypliczbowyzeZnakiem>
-//    {
-//        pewienTypliczbowyzeZnakiem suma = pewienTypliczbowyzeZnakiem.One;
-//        pewienTypliczbowyzeZnakiem d = pewienTypliczbowyzeZnakiem.TryParse(tab.Length)
-        
-           
-//    }
+    public ulong Srednia(ulong[] tab)
+    {
+        ulong suma = 0;
+
+        for (int i = 0; i<tab.Length; i++) 
+        {
+            suma += tab[i];
+        }
+
+        return suma / Convert.ToUInt64(tab.Length);
+    }
     
     public ulong SredniaArytmetycznaEle(ulong[] tablica)
     {
