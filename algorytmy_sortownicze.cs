@@ -4,6 +4,17 @@ public abstract class Baza_Sortownikow
 {
     public abstract void Sortuj(int[] tablica);
     public abstract string nazwa { get; }
+
+    public bool czy_posortowane_niemalejaco(int[] tablica)
+    {
+        for (uint i = 1; i < tablica.Length; i++) 
+        {
+            if (tablica[i-1] > tablica[i])
+                return false;
+        }
+
+        return true;
+    }
 }
 
 public class Bombel : Baza_Sortownikow //o, polimorfizm

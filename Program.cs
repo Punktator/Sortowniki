@@ -2,6 +2,7 @@
 //WL 2023
 
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace Sortowniki;
@@ -17,8 +18,8 @@ public class Centralna_Klasa
         {new Bombel().nazwa, new Bombel() },
         {new Gnom().nazwa, new Gnom()},
         {new SzybkoSort().nazwa, new SzybkoSort()},
-        {new Wstawianie().nazwa, new Wstawianie ()},
-        {new Bogosort().nazwa, new Bogosort()}
+        //{new Wstawianie().nazwa, new Wstawianie ()},
+        //{new Bogosort().nazwa, new Bogosort()}
     };
     
     public static void Main()
@@ -85,6 +86,30 @@ public class Centralna_Klasa
         Console.WriteLine("Naciśnij dowolny klawisz by zamknąć program...");
         Console.ResetColor();
         Console.ReadKey();
+    }
+
+    public static void zapiszDoPliku(string dane)
+    {
+        const string poczatekNazwyPliku = "WYNIKI_TESTÓW_SORTOWANIA";
+        const string format = ".txt";
+        const string sciezkaPliku = "C:\\Users\\oem\\Desktop\\Wizualne Studio\\C-krzyżyk\\Sortowniki\\";
+        DateTime aktualnyCzas = DateTime.Now;
+        string aktualnyCzasTekst = aktualnyCzas.ToString();
+        string nazwaPliku = poczatekNazwyPliku + aktualnyCzasTekst;
+        string pelnaNazwaPliku = sciezkaPliku + nazwaPliku + format;
+        StreamWriter zapisywacz = new(pelnaNazwaPliku);
+
+        try
+        {
+            zapisywacz.WriteLine(dane);
+        }
+        catch(Exception wyjontek)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Wystąpił błąd:");
+            Console.WriteLine(wyjontek.Message);
+            Console.ResetColor();
+        }
     }
 }
 
@@ -173,4 +198,13 @@ class Obsluga_Tablic
 
         return suma / Convert.ToUInt64(tablica.LongLength);
     }
+}
+
+public class Tester
+{
+    public uint dTab { get; set; }
+    public uint krok { get; set; }
+    public uint iloscIteracji { get; set; }
+    public string nazwaSortownika { get; set; }
+    public Dictionary<uint, Wynik_Testu> wynikidlaSortownika;
 }
