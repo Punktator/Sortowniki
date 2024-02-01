@@ -32,20 +32,20 @@ public class Centralna_Klasa
         int n = int.Parse(Console.ReadLine());
         inferfejsSortowniczy = new Obsluga_Tablic(n);
 
-        Console.WriteLine(Obsluga_Tablic.ToString(inferfejsSortowniczy.tablica));
+        Console.WriteLine(inferfejsSortowniczy);
 
         Console.WriteLine();
 
         Console.ForegroundColor = ConsoleColor.DarkGray;
         Console.WriteLine("Sortowanie...");
         Console.ResetColor();
-        
+
         unizegar = Stopwatch.StartNew();
-        slownikSortownikuw["Sortowanie przez wstawianie"].Sortuj(inferfejsSortowniczy.tablica);
+        slownikSortownikuw["Gnomowe"].Sortuj(inferfejsSortowniczy.tablica);
         unizegar.Stop();
         TimeSpan tBomblowania = unizegar.Elapsed;
 
-        Console.WriteLine(Obsluga_Tablic.ToString(inferfejsSortowniczy.tablica));
+        Console.WriteLine(inferfejsSortowniczy);
 
         Console.WriteLine();
 
@@ -118,7 +118,6 @@ public record struct Wynik_Testu
     public ulong Srednia { get; set; }
     public ulong Mediana { get; set; }
     public ulong Wariancja { get; set; }
-    public ulong OdchylenieStandardowe { get; set; }
 }
 
 class Obsluga_Tablic
@@ -126,7 +125,7 @@ class Obsluga_Tablic
     protected static readonly Random randomizer = new();
     public int[] tablica;
 
-    public static string ToString(int[] tablica)
+    public string ToString()
     {
         StringBuilder bufor = new();
         for (uint i = 0; i < tablica.Length; i++)
@@ -137,7 +136,7 @@ class Obsluga_Tablic
         return bufor.ToString();
     }
 
-    public void ZapelnijLosowo(int[] tablica, int max = int.MaxValue)
+    public void ZapelnijLosowo(int max = int.MaxValue)
     {
         for (int i = 0; i < tablica.Length; i++) tablica[i] = randomizer.Next(max);
     }
@@ -145,7 +144,7 @@ class Obsluga_Tablic
     public Obsluga_Tablic(int rozmiarTablicy) 
     {
         tablica = new int[rozmiarTablicy];
-        ZapelnijLosowo(tablica);
+        ZapelnijLosowo();
     }
     
     public static ulong Mediana(ulong[] tab)
@@ -170,28 +169,28 @@ class Obsluga_Tablic
         return suma / Convert.ToUInt64(tab.Length);
     }
     
-    public ulong SredniaArytmetycznaEle(ulong[] tablica)
+    public ulong SredniaArytmetycznaEle()
     {
         ulong suma = 0;
         ulong srednia;
 
         for (uint i = 0; i<tablica.Length; i++)
-            suma += tablica[i];
+            suma += Convert.ToUInt64(tablica[i]);
 
         srednia = suma / Convert.ToUInt64(tablica.Length);
 
         return srednia;
     }
 
-    public ulong Wariancja(ulong[] tablica)
+    public ulong Wariancja()
     {
         ulong czynnik;
-        ulong srednia = SredniaArytmetycznaEle(tablica);
+        ulong srednia = SredniaArytmetycznaEle();
         ulong suma = 0;
 
         for (uint i = 0; i<tablica.Length; i++)
         {
-            czynnik = tablica[i] - srednia;
+            czynnik = Convert.ToUInt64(tablica[i]) - srednia;
             czynnik *= czynnik;
             suma += czynnik;
         }
